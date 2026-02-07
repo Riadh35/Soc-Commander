@@ -16,8 +16,6 @@ Centre de Commandement SOC (Security Operations Center) complet et professionnel
 - [Integration IA (Ollama)](#integration-ia-ollama)
 - [Themes](#themes)
 - [Internationalisation](#internationalisation)
-- [Architecture Technique](#architecture-technique)
-- [Dependances](#dependances)
 - [Configuration](#configuration)
 - [Securite et Protection](#securite-et-protection)
 - [Build et Distribution](#build-et-distribution)
