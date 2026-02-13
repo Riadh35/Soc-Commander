@@ -1,651 +1,2521 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Meta Essentiels -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOC Commander v2.0 | Advanced Cyber Defense</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- SEO Meta Tags -->
+    <title>SOC Commander v2.0 | Solution Professionnelle de Cybersécurité et Monitoring</title>
+    <meta name="description" content="SOC Commander v2.0 - Solution complète de cybersécurité avec monitoring temps réel, détection de menaces, capture de paquets et assistant IA intégré. 11 modules professionnels, 108 outils réseau.">
+    <meta name="keywords" content="SOC, cybersécurité, monitoring réseau, détection menaces, packet capture, assistant IA, Ollama, sécurité informatique, outils réseau, surveillance réseau">
+    <meta name="author" content="Riadh Ben Khaled">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://soc-commander.com/">
+    <meta property="og:title" content="SOC Commander v2.0 | Solution Professionnelle de Cybersécurité">
+    <meta property="og:description" content="Solution complète de cybersécurité avec monitoring temps réel, 11 modules spécialisés et 108 outils intégrés. Licence unique à 49€.">
+    <meta property="og:image" content="https://soc-commander.com/images/og-image.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SOC Commander v2.0 | Solution Professionnelle de Cybersécurité">
+    <meta name="twitter:description" content="Solution complète de cybersécurité avec monitoring temps réel et assistant IA intégré.">
+    <meta name="twitter:image" content="https://soc-commander.com/images/twitter-card.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary: #00d4ff;
-            --primary-glow: rgba(0, 212, 255, 0.4); /* Intensifié pour l'effet visuel */
-            --bg-deep: #0a0c10;
-            --bg-card: #12171d;
-            --border: #30363d;
-            --text-main: #e6edf3;
-            --text-dim: #8b949e;
-            --success: #7ee787;
-            --warning: #f0883e;
-            --danger: #f85149;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
+        /* ==================== ANIMATIONS ==================== */
         @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(0, 212, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(0, 212, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
+            }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         @keyframes fade-in-up {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes node-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+        }
+
+        @keyframes line-flow {
+            0% {
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 2px rgba(0, 212, 255, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.8));
+            }
+        }
+
+        /* ==================== RESET ==================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0c10;
+            color: #e6edf3;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        nav {
+            background: rgba(10, 12, 16, 0.95);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #e6edf3;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .logo i {
+            color: #00d4ff;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.3));
+        }
+
+        .logo:hover i {
+            filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.8));
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+        .logo-text {
+            color: #e6edf3;
+            font-weight: 700;
+        }
+
+        .logo:hover .logo-text {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .logo-badge {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: #00d4ff;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .logo:hover .logo-badge {
+            background: rgba(0, 212, 255, 0.3);
+            border-color: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00d4ff;
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ==================== HERO ==================== */
+        .hero {
+            padding: 120px 0 80px;
+            background: radial-gradient(circle at 50% -20%, #162c46 0%, #0a0c10 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 168, 204, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 38% 62%;
+            gap: 80px;
+            align-items: center;
+            min-height: 600px;
+        }
+
+        .hero-network {
+            position: relative;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 0;
+        }
+
+        .network-bg {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .network-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .network-line {
+            stroke: #00d4ff;
+            stroke-width: 1.5;
+            fill: none;
+            opacity: 0.4;
+            stroke-dasharray: 5, 10;
+            animation: line-flow 20s linear infinite;
+        }
+
+        .network-line.active {
+            stroke-width: 2.5;
+            opacity: 0.7;
+            stroke-dasharray: 10, 5;
+            animation: line-flow 8s linear infinite, glow-pulse 2s ease-in-out infinite;
+        }
+
+        .network-node {
+            fill: #00d4ff;
+            filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.6));
+        }
+
+        /* Équipements réseau — PAS d'animation transform (casse le positionnement SVG) */
+        .network-firewall {
+            fill: #f85149;
+            stroke: #ff6b6b;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px rgba(248, 81, 73, 0.6));
+        }
+
+        .network-router {
+            fill: #00d4ff;
+            stroke: #00a8cc;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.6));
+        }
+
+        .network-switch {
+            fill: #667eea;
+            stroke: #764ba2;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+        }
+
+        .network-server {
+            fill: #7ee787;
+            stroke: #3cba92;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 6px rgba(126, 231, 135, 0.6));
+        }
+
+        .network-endpoint {
+            fill: #f0883e;
+            stroke: #feca57;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 4px rgba(240, 136, 62, 0.5));
+        }
+
+        .network-cloud {
+            fill: url(#cloudGradient);
+            opacity: 0.3;
+            stroke: #00d4ff;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+            animation: glow-pulse 4s ease-in-out infinite;
+        }
+
+        .zone-label {
+            fill: #8b949e;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .equipment-label {
+            fill: #e6edf3;
+            font-size: 8px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes data-flow {
+            0% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: 20;
+            }
+        }
+
+        @keyframes cloud-float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-8px) scale(1.02);
+            }
+        }
+
+        @keyframes rotate-slow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .network-line.flow {
+            animation: data-flow 1.5s linear infinite;
+        }
+
+        .cloud-shape {
+            fill: rgba(0, 212, 255, 0.15);
+            stroke: #00d4ff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.4));
+            animation: cloud-float 6s ease-in-out infinite;
+        }
+
+        .cloud-inner {
+            fill: rgba(102, 126, 234, 0.1);
+            stroke: #667eea;
+            stroke-width: 1;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero-content h1 span {
+            color: #00d4ff;
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            color: #8b949e;
+            margin: 20px auto 40px;
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .hero-version {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 6px 18px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .hero-version:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 280px;
+        }
+
+        .btn-wrapper .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            color: #000;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-2px) scale(1.01);
         }
 
         .btn-download-active {
             animation: pulse-glow 2s infinite;
-            border: 1px solid var(--primary) !important;
         }
 
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-deep); color: var(--text-main); margin: 0; line-height: 1.6; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-        /* NAV */
-        nav {
-            backdrop-filter: blur(20px); background: rgba(10, 12, 16, 0.8);
-            position: fixed; width: 100%; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border); padding: 15px 0;
+        .btn-primary.clicked {
+            animation: none;
+            transform: scale(0.95);
+            box-shadow: 0 0 30px rgba(126, 231, 135, 0.6);
+            background: linear-gradient(135deg, #7ee787 0%, #3cba92 100%);
+            transition: all 0.15s ease;
         }
-        .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 12px; text-transform: uppercase; cursor: pointer; }
-        .logo:hover { opacity: 0.9; }
 
-        .nav-links { display: flex; align-items: center; gap: 5px; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-size: 0.85rem; transition: var(--transition); position: relative; padding: 5px 0; }
-        .nav-links a:hover { color: var(--primary); }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: var(--transition); }
-        .nav-links a:hover::after { width: 100%; }
+        .btn-primary.clicked span {
+            color: #000;
+        }
 
-        /* HERO */
-        .hero { padding: 180px 0 100px; text-align: center; background: radial-gradient(circle at 50% -20%, #162c46 0%, var(--bg-deep) 70%); position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2330363d' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3; }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin: 0; font-weight: 800; position: relative; }
-        .hero p { color: var(--text-dim); margin: 25px auto 40px; max-width: 600px; position: relative; font-size: 1.1rem; }
-        .hero-version { display: inline-block; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; color: var(--primary); margin-bottom: 20px; font-family: 'Fira Code', monospace; position: relative; }
+        .btn-primary.clicked i {
+            animation: none;
+        }
 
-        .btn { padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; transition: var(--transition); border: none; cursor: pointer; font-size: 0.95rem; }
-        .btn-primary { background: var(--primary); color: #000; }
-        .btn-primary:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 0 20px var(--primary-glow); }
-        .btn-secondary { background: #21262d; color: white; border: 1px solid var(--border); }
-        .btn-secondary:hover { transform: translateY(-2px); border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+        @keyframes download-success {
+            0% { transform: scale(0.95); box-shadow: 0 0 30px rgba(126, 231, 135, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(126, 231, 135, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+        }
 
-        /* STATS CARDS */
-        .stats-bar { padding: 60px 0; border-bottom: 1px solid var(--border); background: rgba(18, 23, 29, 0.5); }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+        .btn-secondary {
+            background: #21262d;
+            color: #fff;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .download-info {
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-top: 4px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .download-stats {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+            padding: 20px 30px;
+            background: rgba(18, 23, 29, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .download-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-count i {
+            color: #00d4ff;
+            font-size: 1.2rem;
+        }
+
+        .download-count-number {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #00d4ff;
+            font-family: 'Courier New', monospace;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .download-count-label {
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+
+        .stat-number.counting {
+            color: #00d4ff;
+        }
+
+        .download-count-number.counting {
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* ==================== STATS ==================== */
+        .stats-section {
+            padding: 60px 0;
+            background: rgba(18, 23, 29, 0.5);
+            border-top: 1px solid #30363d;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
         .stat-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 30px 20px; transition: var(--transition); position: relative; overflow: hidden; cursor: default;
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
         }
+
         .stat-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition);
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            opacity: 0;
+            transition: all 0.3s;
         }
+
         .stat-card::after {
-            content: ''; position: absolute; inset: 0; border-radius: 16px;
-            background: radial-gradient(circle at 50% 0%, var(--primary-glow), transparent 70%); opacity: 0; transition: var(--transition);
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.25), transparent 70%);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
         }
-        .stat-card:hover { transform: translateY(-6px); border-color: rgba(0, 212, 255, 0.4); box-shadow: 0 12px 35px rgba(0, 212, 255, 0.12); }
-        .stat-card:hover::before { opacity: 1; }
-        .stat-card:hover::after { opacity: 1; }
-        .stat-card .stat-icon { font-size: 1.6rem; color: var(--primary); margin-bottom: 14px; position: relative; z-index: 1; }
-        .stat-card .stat-number {
-            font-size: 2.5rem; font-weight: 800; color: var(--primary); font-family: 'Fira Code', monospace;
-            position: relative; z-index: 1; line-height: 1;
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 12px 35px rgba(0, 212, 255, 0.15);
         }
-        .stat-card .stat-label { color: var(--text-dim); font-size: 0.82rem; margin-top: 8px; position: relative; z-index: 1; font-weight: 500; }
-        .stat-card:hover .stat-number { text-shadow: 0 0 20px var(--primary-glow); }
 
-        /* FEATURES */
-        .features-section { padding: 100px 0; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: 2.2rem; font-weight: 800; margin: 0 0 15px; }
-        .section-title p { color: var(--text-dim); max-width: 600px; margin: 0 auto; }
+        .stat-card:hover::before {
+            opacity: 1;
+        }
 
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #1a202c;
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #1a202c;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #00d4ff;
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #8b949e;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-card:hover .stat-number {
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2 span {
+            color: #00d4ff;
+        }
+
+        .section-title p {
+            color: #8b949e;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* ==================== FEATURES ==================== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         .feature-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 35px 28px; transition: var(--transition); position: relative; overflow: hidden;
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition); }
-        .feature-card:hover { transform: translateY(-4px); border-color: rgba(0, 212, 255, 0.3); }
-        .feature-card:hover::before { opacity: 1; }
-        .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 18px; }
-        .feature-card h3 { margin: 0 0 10px; font-size: 1.05rem; font-weight: 700; }
-        .feature-card p { color: var(--text-dim); font-size: 0.88rem; margin: 0; line-height: 1.7; }
 
-        /* MODULES */
-        .modules-section { padding: 80px 0; background: rgba(18, 23, 29, 0.3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 50px; }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.15);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: #8b949e;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ==================== MODULES ==================== */
+        .modules-section {
+            background: rgba(18, 23, 29, 0.3);
+            border-top: 1px solid #30363d;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .modules-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         .module-item {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-            padding: 22px 18px; text-align: center; transition: var(--transition);
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
-        .module-item:hover { border-color: var(--primary); transform: translateY(-3px); }
-        .module-item .module-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
-        .module-item .module-name { font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
 
-        /* ADVANTAGES */
-        .advantages-section { padding: 100px 0; }
-        .advantages-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        .advantage-list { list-style: none; padding: 0; margin: 0; }
+        .module-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .module-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.15), transparent 70%);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .module-item:hover {
+            border-color: #00d4ff;
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(0, 212, 255, 0.2);
+        }
+
+        .module-item:hover::before {
+            opacity: 1;
+        }
+
+        .module-item:hover::after {
+            opacity: 1;
+        }
+
+        .module-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 16px;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .module-item:hover .module-icon {
+            transform: scale(1.15) rotate(-5deg);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .module-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #e6edf3;
+            transition: all 0.3s;
+        }
+
+        .module-item:hover .module-name {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Couleurs individuelles pour chaque module */
+        .module-item:nth-child(1) .module-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .module-item:nth-child(2) .module-icon { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #2d3748; }
+        .module-item:nth-child(3) .module-icon { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+        .module-item:nth-child(4) .module-icon { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
+        .module-item:nth-child(5) .module-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .module-item:nth-child(6) .module-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a202c; }
+        .module-item:nth-child(7) .module-icon { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #1a202c; }
+        .module-item:nth-child(8) .module-icon { background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); }
+        .module-item:nth-child(9) .module-icon { background: linear-gradient(135deg, #a044ff 0%, #6a3093 100%); }
+        .module-item:nth-child(10) .module-icon { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
+        .module-item:nth-child(11) .module-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .module-item:nth-child(12) .module-icon { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+
+        /* ==================== ADVANTAGES ==================== */
+        .advantages-section {
+            padding: 100px 0;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .advantage-list {
+            list-style: none;
+        }
+
         .advantage-list li {
-            display: flex; align-items: flex-start; gap: 15px;
-            padding: 18px 0; border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
         }
-        .advantage-list li:last-child { border-bottom: none; }
-        .advantage-list .adv-icon {
-            width: 40px; height: 40px; min-width: 40px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; background: rgba(0, 212, 255, 0.1); color: var(--primary);
+
+        .advantage-list li:last-child {
+            border-bottom: none;
         }
-        .advantage-list .adv-text h4 { margin: 0 0 4px; font-size: 0.95rem; }
-        .advantage-list .adv-text p { margin: 0; color: var(--text-dim); font-size: 0.85rem; }
+
+        .adv-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .advantage-list li:nth-child(1) .adv-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .advantage-list li:nth-child(2) .adv-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+        }
+
+        .advantage-list li:nth-child(3) .adv-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #1a202c;
+        }
+
+        .advantage-list li:nth-child(4) .adv-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #1a202c;
+        }
+
+        .advantage-list li:nth-child(5) .adv-icon {
+            background: linear-gradient(135deg, #a044ff 0%, #6a3093 100%);
+            color: #fff;
+        }
+
+        .advantage-list li:nth-child(6) .adv-icon {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: #fff;
+        }
+
+        .advantage-list li:hover .adv-icon {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .adv-text h4 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .adv-text p {
+            margin: 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
         .advantage-visual {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
-            padding: 40px; text-align: center; position: relative;
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
         }
-        .advantage-visual .terminal-header {
-            display: flex; gap: 6px; margin-bottom: 20px; justify-content: flex-start;
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: flex-start;
         }
-        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
         .terminal-content {
-            font-family: 'Fira Code', monospace; font-size: 0.78rem;
-            color: var(--text-dim); text-align: left; line-height: 2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            color: #8b949e;
+            text-align: left;
+            line-height: 2;
         }
-        .terminal-content .line-ok { color: var(--success); }
-        .terminal-content .line-warn { color: var(--warning); }
-        .terminal-content .line-alert { color: var(--danger); }
-        .terminal-content .line-info { color: var(--primary); }
 
-        /* PRICING */
-        .pricing-section { padding: 100px 0; }
-        .pricing-card { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border); display: flex; flex-wrap: wrap; overflow: hidden; max-width: 850px; margin: 0 auto; }
-        .pricing-info { flex: 1.2; padding: 50px; }
-        .pricing-info h2 { margin: 0 0 10px; }
-        .pricing-info > p { color: var(--text-dim); }
-        .pricing-info ul { list-style: none; padding: 0; color: var(--text-dim); }
-        .pricing-info ul li { padding: 6px 0; }
-        .pricing-info ul li i { margin-right: 8px; }
-        .pricing-action { flex: 0.8; padding: 50px; text-align: center; background: rgba(255,255,255,0.02); border-left: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+        .terminal-content .line-ok { color: #7ee787; }
+        .terminal-content .line-warn { color: #f0883e; }
+        .terminal-content .line-alert { color: #f85149; }
+        .terminal-content .line-info { color: #00d4ff; }
 
-        /* CONTACT */
-        .contact-section { padding: 80px 0; border-top: 1px solid var(--border); }
-        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 50px; }
+        /* ==================== PRICING ==================== */
+        .pricing-section {
+            padding: 100px 0;
+        }
+
+        .pricing-card {
+            background: #12171d;
+            border-radius: 20px;
+            border: 1px solid #30363d;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-info {
+            flex: 1.2;
+            padding: 60px;
+        }
+
+        .pricing-info h3 {
+            margin: 0 0 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .pricing-info > p {
+            color: #8b949e;
+            margin-bottom: 24px;
+        }
+
+        .pricing-info ul {
+            list-style: none;
+            color: #8b949e;
+            margin-top: 24px;
+        }
+
+        .pricing-info ul li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-info ul li i {
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+
+        .pricing-action {
+            flex: 0.8;
+            padding: 60px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .pricing-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 8px;
+            color: #00d4ff;
+        }
+
+        .pricing-detail {
+            color: #8b949e;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .pricing-badge {
+            color: #7ee787;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .pricing-secure {
+            color: #8b949e;
+            font-size: 0.8rem;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* ==================== CONTACT ==================== */
+        .contact-section {
+            padding: 80px 0;
+            border-top: 1px solid #30363d;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 60px;
+        }
+
         .contact-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 35px; text-align: center; transition: var(--transition); text-decoration: none; color: inherit;
-            display: block; cursor: pointer; position: relative; overflow: hidden;
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
-        .contact-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition);
-            pointer-events: none;
-        }
-        .contact-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 50% 0%, var(--primary-glow), transparent 70%); opacity: 0; transition: var(--transition);
-            pointer-events: none;
-        }
-        .contact-card:hover { border-color: rgba(0, 212, 255, 0.4); transform: translateY(-5px); box-shadow: 0 12px 35px rgba(0, 212, 255, 0.12); }
-        .contact-card:hover::before { opacity: 1; }
-        .contact-card:hover::after { opacity: 1; }
-        .contact-card:active { transform: translateY(-2px) scale(0.98); }
-        .contact-card .contact-icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; position: relative; z-index: 1; transition: var(--transition); }
-        .contact-card:hover .contact-icon { transform: scale(1.15); text-shadow: 0 0 20px var(--primary-glow); }
-        .contact-card h3 { margin: 0 0 8px; font-size: 1rem; position: relative; z-index: 1; }
-        .contact-card p { color: var(--text-dim); font-size: 0.85rem; margin: 0; position: relative; z-index: 1; }
-        .contact-card .click-hint { display: block; margin-top: 12px; font-size: 0.72rem; color: rgba(0,212,255,0.5); position: relative; z-index: 1; transition: var(--transition); }
-        .contact-card:hover .click-hint { color: var(--primary); }
 
-        /* MAIL POPUP */
-        .mail-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; backdrop-filter: blur(5px); justify-content: center; align-items: center; }
-        .mail-overlay.active { display: flex; }
-        .mail-popup { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 40px; max-width: 420px; width: 90%; text-align: center; position: relative; }
-        .mail-popup h3 { margin: 0 0 8px; font-size: 1.15rem; }
-        .mail-popup .mail-subtitle { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 25px; }
-        .mail-popup .mail-close { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-dim); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
-        .mail-popup .mail-close:hover { color: var(--primary); }
-        
-        /* Options de messagerie avec effet de survol lueur */
-        .mail-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover,
+        .contact-card:focus {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 212, 255, 0.15);
+            outline: 2px solid #00d4ff;
+            outline-offset: 2px;
+        }
+
+        .contact-card:hover::before,
+        .contact-card:focus::before {
+            opacity: 1;
+        }
+
+        .contact-icon {
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s;
+        }
+
+        .contact-card:nth-child(1) .contact-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .contact-card:nth-child(2) .contact-icon {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: #fff;
+        }
+
+        .contact-card:nth-child(3) .contact-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #1a202c;
+        }
+
+        .contact-card:hover .contact-icon,
+        .contact-card:focus .contact-icon {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .contact-card p {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .click-hint {
+            display: block;
+            margin-top: 14px;
+            font-size: 0.75rem;
+            color: rgba(0, 212, 255, 0.6);
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .contact-card:hover .click-hint,
+        .contact-card:focus .click-hint {
+            color: #00d4ff;
+        }
+
+        /* ==================== MAIL POPUP ==================== */
+        .mail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mail-overlay.active {
+            display: flex;
+        }
+
+        .mail-popup {
+            background: #12171d;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .mail-popup h3 {
+            margin: 0 0 10px;
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .mail-subtitle {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .mail-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .mail-close:hover,
+        .mail-close:focus {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            outline: none;
+        }
+
+        .mail-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
         .mail-option {
-            display: flex; align-items: center; gap: 12px; padding: 14px 20px;
-            background: #1a1f26; border: 1px solid #30363d; border-radius: 12px;
-            color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 600;
-            transition: var(--transition); cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #1a1f26;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            color: #e6edf3;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
         }
-        .mail-option:hover { 
-            border-color: var(--primary); 
-            background: #21262d; 
-            transform: translateY(-2px); 
-            box-shadow: 0 0 15px var(--primary-glow); 
+
+        #opt-gmail:hover,
+        #opt-gmail:focus {
+            border-color: #ea4335;
+            background: rgba(234, 67, 53, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(234, 67, 53, 0.3);
+            outline: none;
         }
-        
+
+        #opt-outlook:hover,
+        #opt-outlook:focus {
+            border-color: #0078d4;
+            background: rgba(0, 120, 212, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+            outline: none;
+        }
+
+        #opt-yahoo:hover,
+        #opt-yahoo:focus {
+            border-color: #6001d2;
+            background: rgba(96, 1, 210, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(96, 1, 210, 0.3);
+            outline: none;
+        }
+
+        button.mail-option:hover,
+        button.mail-option:focus {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+            outline: none;
+        }
+
+        .mail-option i {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
         .mail-option i.fa-google { color: #ea4335; }
         .mail-option i.fa-envelope { color: #0078d4; }
         .mail-option i.fa-yahoo { color: #6001d2; }
         .mail-option i.fa-copy { color: #00d4ff; }
-        
-        .mail-option i { font-size: 1.2rem; width: 22px; text-align: center; }
-        .mail-copied { display: none; color: var(--success); font-size: 0.82rem; margin-top: 15px; font-weight: 600; }
 
-        /* FOOTER */
-        footer { padding: 50px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-dim); }
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: var(--transition); }
-        .footer-links a:hover { color: var(--primary); }
+        .mail-copied {
+            display: none;
+            color: #7ee787;
+            font-size: 0.9rem;
+            margin-top: 16px;
+            font-weight: 600;
+        }
 
-        /* RESPONSIVE */
+        /* ==================== FOOTER ==================== */
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid #30363d;
+            background: rgba(18, 23, 29, 0.3);
+            color: #8b949e;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #00d4ff;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .advantage-visual {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-network {
+                height: 400px;
+                order: 2;
+            }
+
+            .hero-content {
+                text-align: center;
+                order: 1;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+        }
+
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .features-grid { grid-template-columns: 1fr; }
-            .modules-grid { grid-template-columns: repeat(2, 1fr); }
-            .advantages-grid { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .pricing-card { flex-direction: column; }
-            .pricing-action { border-left: none; border-top: 1px solid var(--border); }
-            .nav-links a { margin-left: 12px; font-size: 0.78rem; }
+            .hero {
+                padding: 140px 0 60px;
+            }
+
+            .hero-container {
+                padding: 0 20px;
+            }
+
+            .hero-network {
+                height: 350px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modules-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .pricing-card {
+                flex-direction: column;
+            }
+
+            .pricing-info,
+            .pricing-action {
+                padding: 40px;
+            }
+
+            .pricing-action {
+                border-left: none;
+                border-top: 1px solid #30363d;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mail-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 16px;
+            }
+
+            .btn-wrapper {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .download-info {
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+
+            .pricing-info,
+            .pricing-action {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="container nav-content">
-        <a href="#" class="logo" style="text-decoration:none; color:inherit;">
-            <i class="fas fa-shield-halved" style="color:var(--primary)"></i> SOC COMMANDER
-        </a>
-        <div class="nav-links">
-            <a href="#features">Fonctionnalites</a>
-            <a href="#modules">Modules</a>
-            <a href="#advantages">Avantages</a>
-            <a href="#pricing">Tarifs</a>
-            <a href="#contact" style="color:var(--primary)"><i class="fas fa-headset"></i> Support</a>
-        </div>
-    </div>
-</nav>
-
-<header class="hero">
-    <div class="container">
-        <h1>Next-Gen <span style="color:var(--primary)">Cyber Defense</span> Engine</h1>
-        <div class="hero-version">v2.0 — Edition Professionnel</div>
-        <p>Surveillance proactive, monitoring temps reel, detection de menaces et assistant IA integre. La solution SOC tout-en-un pour les professionnels de la cybersecurite.</p>
-        
-        <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px; flex-wrap: wrap; position: relative;">
-            
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <a href="https://github.com/Riadh35/soc-commander/releases/download/v2.0/SOC_Commander_v2.0_Setup.msi" 
-                   class="btn btn-primary btn-download-active" 
-                   download>
-                   <i class="fas fa-download"></i> Télécharger SOC Commander v2.0
-                </a>
-                <span style="font-size: 0.85rem; color: var(--text-dim); display: flex; align-items: center; gap: 6px; opacity: 0.8;">
-                     Telecharger le MSI (33.3 MB)
-                </span>
-            </div>
-
-            <a href="#contact" class="btn btn-secondary">
-                <i class="fas fa-envelope"></i> Contact Support
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fas fa-shield-halved"></i>
+                <span class="logo-text">SOC COMMANDER</span>
+                <span class="logo-badge">v2.0</span>
             </a>
-        </div>
-    </div>
-</header>
 
-<section class="stats-bar">
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-cubes"></i></div>
-                <div class="stat-number">11</div>
-                <div class="stat-label">Modules Specialises</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-terminal"></i></div>
-                <div class="stat-number">108</div>
-                <div class="stat-label">Outils Integres</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-language"></i></div>
-                <div class="stat-number">2</div>
-                <div class="stat-label">Langues (FR / EN)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-palette"></i></div>
-                <div class="stat-number">3</div>
-                <div class="stat-label">Themes Visuels</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="features" class="features-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Fonctionnalites <span style="color:var(--primary)">Cles</span></h2>
-            <p>Un centre de commandement complet pour la securite de votre infrastructure.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(0,212,255,0.1); color:var(--primary);">
-                    <i class="fas fa-gauge-high"></i>
-                </div>
-                <h3>Monitoring Temps Reel</h3>
-                <p>Jauges circulaires animees pour CPU, RAM et disque. Metriques systeme, reseau et securite avec rafraichissement automatique configurable.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(126,231,135,0.1); color:var(--success);">
-                    <i class="fas fa-shield-virus"></i>
-                </div>
-                <h3>Detection de Menaces</h3>
-                <p>Moteur de securite temps reel : detection de ports backdoor (4444, 1337, 31337), processus suspects et connexions anormales.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(240,136,62,0.1); color:var(--warning);">
-                    <i class="fas fa-network-wired"></i>
-                </div>
-                <h3>Capture de Paquets</h3>
-                <p>Sniffing reseau en direct via Scapy. Filtrage par protocole, statistiques temps reel, export CSV et sauvegarde PCAP.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(168,133,255,0.1); color:#a885ff;">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h3>Assistant IA (Ollama)</h3>
-                <p>LLM local integre pour l'analyse d'incidents. Injection automatique du contexte SOC, streaming temps reel, 100% hors ligne.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(248,81,73,0.1); color:var(--danger);">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <h3>Alertes Multi-Niveaux</h3>
-                <p>Systeme d'alertes avec severite Critique, Warning et Info. Acquittement, historique, filtrage avance et export CSV.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background:rgba(0,212,255,0.1); color:var(--primary);">
-                    <i class="fas fa-file-lines"></i>
-                </div>
-                <h3>Rapports Professionnels</h3>
-                <p>8 types de rapports (journalier, securite, executif...). Export HTML, TXT, CSV avec apercu integre et impression directe.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="modules" class="modules-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>11 Modules <span style="color:var(--primary)">Specialises</span></h2>
-            <p>Chaque aspect de votre infrastructure couvert par un module dedie.</p>
-        </div>
-        <div class="modules-grid">
-            <div class="module-item">
-                <span class="module-icon">📊</span>
-                <span class="module-name">Tableau de Bord</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">📡</span>
-                <span class="module-name">Capteurs</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🖥️</span>
-                <span class="module-name">Equipements</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🌐</span>
-                <span class="module-name">Reseau</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🛡️</span>
-                <span class="module-name">Securite</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">📡</span>
-                <span class="module-name">Capture Paquets</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🚨</span>
-                <span class="module-name">Alertes</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🛠️</span>
-                <span class="module-name">Outils (108)</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🧠</span>
-                <span class="module-name">Assistant IA</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">📈</span>
-                <span class="module-name">Rapports</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">⚙️</span>
-                <span class="module-name">Parametres</span>
-            </div>
-            <div class="module-item">
-                <span class="module-icon">🔐</span>
-                <span class="module-name">Licence HWID</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="advantages" class="advantages-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Pourquoi choisir <span style="color:var(--primary)">SOC Commander</span> ?</h2>
-            <p>Les avantages qui font la difference face aux solutions classiques.</p>
-        </div>
-        <div class="advantages-grid">
-            <div>
-                <ul class="advantage-list">
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-bolt"></i></div>
-                        <div class="adv-text">
-                            <h4>Solution Tout-en-Un</h4>
-                            <p>11 modules dans une seule application. Plus besoin de jongler entre plusieurs outils : monitoring, securite, capture, IA et rapports reunis.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-lock"></i></div>
-                        <div class="adv-text">
-                            <h4>100% Local et Securise</h4>
-                            <p>Aucune donnee envoyee sur Internet. L'IA fonctionne en local via Ollama. Vos donnees restent sur votre infrastructure.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-language"></i></div>
-                        <div class="adv-text">
-                            <h4>Bilingue FR / EN</h4>
-                            <p>Interface entierement traduite en francais et anglais avec changement en temps reel. Plus de 180 cles de traduction.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-palette"></i></div>
-                        <div class="adv-text">
-                            <h4>3 Themes Professionnels</h4>
-                            <p>SOC Dark, Cyber Blue et Matrix Green. Personnalisez l'apparence selon vos preferences ou votre environnement.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-fingerprint"></i></div>
-                        <div class="adv-text">
-                            <h4>Licence liee au Materiel</h4>
-                            <p>Activation par empreinte machine unique (HWID). Protection anti-tampering, anti-debug et anti-reverse engineering integree.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="adv-icon"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="adv-text">
-                            <h4>Paiement Unique, Pas d'Abonnement</h4>
-                            <p>Une seule licence, pas de frais recurrents. Mises a jour v2.x incluses et support technique par email.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="advantage-visual">
-                <div class="terminal-header">
-                    <div class="terminal-dot" style="background:#f85149;"></div>
-                    <div class="terminal-dot" style="background:#f0883e;"></div>
-                    <div class="terminal-dot" style="background:#7ee787;"></div>
-                </div>
-                <div class="terminal-content">
-                    <div class="line-info">[SOC Commander v2.0] Demarrage...</div>
-                    <div class="line-ok">&#10003; Integrite du fichier verifiee (SHA-256)</div>
-                    <div class="line-ok">&#10003; Anti-debug : aucun debugger detecte</div>
-                    <div class="line-ok">&#10003; DEP active avec succes</div>
-                    <div class="line-ok">&#10003; Licence FULL validee</div>
-                    <div class="line-ok">&#10003; Moteur de securite demarre</div>
-                    <div class="line-info">[Dashboard] CPU: 23% | RAM: 61% | Disk: 45%</div>
-                    <div class="line-info">[Capteurs] 12 actifs | 0 critiques</div>
-                    <div class="line-warn">&#9888; [Securite] Nouvelle connexion port 3389 (RDP)</div>
-                    <div class="line-alert">&#10007; [Alerte] Port 4444 detecte — backdoor potentiel</div>
-                    <div class="line-ok">&#10003; [IA] Ollama connecte — llama3.1 pret</div>
-                    <div class="line-info">[Capture] 1,247 paquets analyses</div>
-                    <div class="line-ok">&#10003; Tous les modules operationnels</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="pricing" class="pricing-section container">
-    <div class="section-title">
-        <h2>Licence <span style="color:var(--primary)">Professionnelle</span></h2>
-        <p>Un investissement unique pour une protection permanente.</p>
-    </div>
-    <div class="pricing-card">
-        <div class="pricing-info">
-            <h2>Licence FULL</h2>
-            <p>Protection illimitee et activation par HWID.</p>
-            <ul>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> 11 modules complets et sans restriction</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> 108 outils reseau et administration</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> Assistant IA integre (Ollama)</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> Capture de paquets et analyse reseau</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> Mises a jour v2.x incluses</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> Support technique par email</li>
-                <li><i class="fas fa-check" style="color:var(--success)"></i> Licence permanente, sans abonnement</li>
+            <ul class="nav-links">
+                <li><a href="#features">Fonctionnalités</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#advantages">Avantages</a></li>
+                <li><a href="#pricing">Tarifs</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
-        <div class="pricing-action">
-            <div style="font-size: 3rem; font-weight: 800;">49&#8364;</div>
-            <p style="color:var(--text-dim); margin-bottom: 5px;">Paiement unique</p>
-            <p style="color:var(--success); font-size:0.8rem; margin-bottom: 25px;"><i class="fas fa-infinity"></i> Licence permanente</p>
-            <a href="https://paypal.me/ryad36/49" class="btn btn-primary" target="_blank" rel="noopener">
-                <i class="fab fa-paypal"></i> ACHETER MAINTENANT
-            </a>
-            <p style="color:var(--text-dim); font-size:0.75rem; margin-top: 15px;">
-                <i class="fas fa-shield-halved"></i> Paiement securise via PayPal
-            </p>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-container">
+            <!-- RÉSEAU SOC À GAUCHE -->
+            <div class="hero-network">
+                <div class="network-bg">
+                    <svg class="network-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 540">
+
+                        <!-- ========== CONNEXIONS (dessous) ========== -->
+                        <!-- Firewall(77,70) -> Router(120,230) -->
+                        <line class="network-line active flow" x1="77" y1="85" x2="120" y2="218" stroke-dasharray="4,4" />
+                        <!-- IDS(170,70) -> Router(120,230) -->
+                        <line class="network-line active flow" x1="170" y1="85" x2="130" y2="218" stroke-dasharray="4,4" />
+                        <!-- SIEM(280,70) -> Switch(370,230) -->
+                        <line class="network-line active flow" x1="280" y1="90" x2="370" y2="218" stroke-dasharray="4,4" />
+                        <!-- SIEM -> Cloud -->
+                        <line class="network-line flow" x1="280" y1="90" x2="245" y2="240" stroke-dasharray="4,4" />
+
+                        <!-- Router(120,230) -> Cloud(245,270) -->
+                        <line class="network-line active" x1="138" y1="230" x2="195" y2="260" />
+                        <!-- Switch(370,230) -> Cloud(245,270) -->
+                        <line class="network-line active" x1="355" y1="240" x2="300" y2="260" />
+                        <!-- LB(120,340) -> Cloud(245,270) -->
+                        <line class="network-line" x1="138" y1="340" x2="200" y2="290" />
+
+                        <!-- Cloud -> Server1(80,440) -->
+                        <line class="network-line active flow" x1="210" y1="295" x2="92" y2="430" stroke-dasharray="4,4" />
+                        <!-- Cloud -> Server2(155,440) -->
+                        <line class="network-line active flow" x1="225" y1="295" x2="167" y2="430" stroke-dasharray="4,4" />
+                        <!-- Cloud -> PC1(265,440) -->
+                        <line class="network-line flow" x1="245" y1="295" x2="265" y2="430" stroke-dasharray="4,4" />
+                        <!-- Cloud -> PC2(325,440) -->
+                        <line class="network-line flow" x1="260" y1="295" x2="325" y2="430" stroke-dasharray="4,4" />
+                        <!-- Cloud -> PC3(385,440) -->
+                        <line class="network-line flow" x1="280" y1="295" x2="385" y2="430" stroke-dasharray="4,4" />
+                        <!-- Cloud -> Mobile(440,440) -->
+                        <line class="network-line flow" x1="295" y1="290" x2="440" y2="440" stroke-dasharray="4,4" />
+
+                        <!-- ========== ZONE SOC OPERATIONS (Haut) ========== -->
+                        <text class="zone-label" x="25" y="30">SOC Operations</text>
+
+                        <!-- Firewall — centre(77,70) -->
+                        <rect class="network-firewall" x="60" y="50" width="34" height="28" rx="4" />
+                        <text class="equipment-label" x="60" y="92">Firewall</text>
+
+                        <!-- IDS/IPS — centre(170,70) -->
+                        <rect class="network-firewall" x="153" y="50" width="34" height="28" rx="4" />
+                        <text class="equipment-label" x="155" y="92">IDS/IPS</text>
+
+                        <!-- SIEM — centre(280,70) -->
+                        <rect class="network-server" x="264" y="48" width="32" height="38" rx="3" />
+                        <line x1="267" y1="56" x2="293" y2="56" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="267" y1="64" x2="293" y2="64" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="267" y1="72" x2="293" y2="72" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <circle cx="270" cy="56" r="1.2" fill="#7ee787" opacity="0.8" />
+                        <circle cx="270" cy="64" r="1.2" fill="#00d4ff" opacity="0.6" />
+                        <text class="equipment-label" x="270" y="100">SIEM</text>
+
+                        <!-- ========== ZONE CORE (Milieu) ========== -->
+                        <text class="zone-label" x="25" y="195">Core Infrastructure</text>
+
+                        <!-- Cloud Central — centre(245,270) -->
+                        <path class="cloud-shape" d="M 190,270 Q 190,252 205,248 Q 212,238 228,238 Q 240,230 252,235 Q 265,230 275,238 Q 290,240 298,250 Q 308,255 308,268 Q 308,280 300,288 Q 288,296 272,296 Q 258,300 248,298 Q 235,300 222,296 Q 206,292 196,284 Q 190,280 190,270 Z" />
+                        <path class="cloud-inner" d="M 208,266 Q 208,258 218,255 Q 228,255 236,258 Q 244,255 252,256 Q 262,256 268,260 Q 276,258 282,262 Q 288,266 288,272 Q 286,278 278,282 Q 268,284 258,284 Q 248,286 240,284 Q 230,284 222,280 Q 214,276 210,270 Q 208,268 208,266 Z" />
+                        <text class="equipment-label" x="228" y="275" style="fill:#00d4ff;font-size:10px;font-weight:700;">CLOUD</text>
+
+                        <!-- Router — centre(120,230) -->
+                        <circle class="network-router" cx="120" cy="230" r="16" />
+                        <circle cx="120" cy="230" r="9" fill="none" stroke="#0a0c10" stroke-width="1.5" />
+                        <line x1="120" y1="221" x2="120" y2="217" stroke="#0a0c10" stroke-width="2" stroke-linecap="round" />
+                        <line x1="120" y1="243" x2="120" y2="239" stroke="#0a0c10" stroke-width="2" stroke-linecap="round" />
+                        <line x1="109" y1="230" x2="105" y2="230" stroke="#0a0c10" stroke-width="2" stroke-linecap="round" />
+                        <line x1="135" y1="230" x2="131" y2="230" stroke="#0a0c10" stroke-width="2" stroke-linecap="round" />
+                        <text class="equipment-label" x="105" y="258">Router</text>
+
+                        <!-- Switch — centre(370,235) -->
+                        <rect class="network-switch" x="350" y="218" width="42" height="30" rx="3" />
+                        <line x1="354" y1="228" x2="388" y2="228" stroke="#e6edf3" stroke-width="1" opacity="0.3" />
+                        <line x1="354" y1="235" x2="388" y2="235" stroke="#e6edf3" stroke-width="1" opacity="0.3" />
+                        <line x1="354" y1="242" x2="388" y2="242" stroke="#e6edf3" stroke-width="1" opacity="0.3" />
+                        <circle cx="358" cy="228" r="1.5" fill="#7ee787" opacity="0.9" />
+                        <circle cx="363" cy="228" r="1.5" fill="#7ee787" opacity="0.9" />
+                        <circle cx="368" cy="228" r="1.5" fill="#f0883e" opacity="0.7" />
+                        <circle cx="358" cy="235" r="1.5" fill="#00d4ff" opacity="0.6" />
+                        <text class="equipment-label" x="358" y="262">Switch</text>
+
+                        <!-- Load Balancer — centre(120,340) -->
+                        <rect class="network-router" x="102" y="325" width="36" height="28" rx="3" />
+                        <path d="M 113,335 L 118,340 L 113,345" stroke="#0a0c10" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                        <path d="M 128,335 L 123,340 L 128,345" stroke="#0a0c10" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                        <text class="equipment-label" x="115" y="368">LB</text>
+
+                        <!-- ========== ZONE ACCESS (Bas) ========== -->
+                        <text class="zone-label" x="25" y="410">Access Layer</text>
+
+                        <!-- Serveur 1 — centre(92,450) -->
+                        <rect class="network-server" x="78" y="430" width="28" height="36" rx="2" />
+                        <line x1="81" y1="438" x2="103" y2="438" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="81" y1="446" x2="103" y2="446" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="81" y1="454" x2="103" y2="454" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <circle cx="84" cy="438" r="1.2" fill="#7ee787" opacity="0.9" />
+                        <circle cx="84" cy="446" r="1.2" fill="#7ee787" opacity="0.9" />
+                        <circle cx="84" cy="454" r="1.2" fill="#00d4ff" opacity="0.6" />
+                        <text class="equipment-label" x="76" y="480">Server 1</text>
+
+                        <!-- Serveur 2 — centre(167,450) -->
+                        <rect class="network-server" x="153" y="430" width="28" height="36" rx="2" />
+                        <line x1="156" y1="438" x2="178" y2="438" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="156" y1="446" x2="178" y2="446" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <line x1="156" y1="454" x2="178" y2="454" stroke="#3cba92" stroke-width="1" opacity="0.4" />
+                        <circle cx="159" cy="438" r="1.2" fill="#7ee787" opacity="0.9" />
+                        <circle cx="159" cy="446" r="1.2" fill="#f0883e" opacity="0.7" />
+                        <circle cx="159" cy="454" r="1.2" fill="#7ee787" opacity="0.9" />
+                        <text class="equipment-label" x="151" y="480">Server 2</text>
+
+                        <!-- PC 1 — centre(265,445) -->
+                        <rect class="network-endpoint" x="250" y="432" width="30" height="22" rx="2" />
+                        <rect x="252" y="454" width="26" height="3" rx="1" fill="#f0883e" opacity="0.5" />
+                        <rect x="254" y="435" width="22" height="15" rx="1" fill="#1a1f26" opacity="0.4" />
+                        <text class="equipment-label" x="255" y="472">PC 1</text>
+
+                        <!-- PC 2 — centre(325,445) -->
+                        <rect class="network-endpoint" x="310" y="432" width="30" height="22" rx="2" />
+                        <rect x="312" y="454" width="26" height="3" rx="1" fill="#f0883e" opacity="0.5" />
+                        <rect x="314" y="435" width="22" height="15" rx="1" fill="#1a1f26" opacity="0.4" />
+                        <text class="equipment-label" x="315" y="472">PC 2</text>
+
+                        <!-- PC 3 — centre(385,445) -->
+                        <rect class="network-endpoint" x="370" y="432" width="30" height="22" rx="2" />
+                        <rect x="372" y="454" width="26" height="3" rx="1" fill="#f0883e" opacity="0.5" />
+                        <rect x="374" y="435" width="22" height="15" rx="1" fill="#1a1f26" opacity="0.4" />
+                        <text class="equipment-label" x="375" y="472">PC 3</text>
+
+                        <!-- Mobile — centre(440,450) -->
+                        <rect class="network-endpoint" x="431" y="435" width="18" height="28" rx="3" />
+                        <rect x="433" y="438" width="14" height="20" rx="1" fill="#1a1f26" opacity="0.3" />
+                        <circle cx="440" cy="460" r="1.5" fill="#1a1f26" opacity="0.5" />
+                        <text class="equipment-label" x="428" y="476">Mobile</text>
+
+                        <!-- ========== Packets de données animés ========== -->
+                        <circle r="2.5" fill="#00d4ff" opacity="0.9">
+                            <animateMotion dur="3s" repeatCount="indefinite" path="M 77,85 L 120,218" />
+                            <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                        <circle r="2.5" fill="#7ee787" opacity="0.9">
+                            <animateMotion dur="3.5s" repeatCount="indefinite" path="M 225,295 L 167,430" />
+                            <animate attributeName="opacity" values="0;1;1;0" dur="3.5s" repeatCount="indefinite" />
+                        </circle>
+                        <circle r="2" fill="#f0883e" opacity="0.9">
+                            <animateMotion dur="4s" repeatCount="indefinite" path="M 280,295 L 385,430" />
+                            <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" />
+                        </circle>
+                        <circle r="2" fill="#667eea" opacity="0.9">
+                            <animateMotion dur="3s" repeatCount="indefinite" path="M 280,90 L 370,218" />
+                            <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" />
+                        </circle>
+
+                        <!-- LEDs clignotantes (animation subtile) -->
+                        <circle cx="270" cy="56" r="1.2" fill="#7ee787">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="358" cy="235" r="1.5" fill="#00d4ff">
+                            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- CONTENU À DROITE -->
+            <div class="hero-content">
+                <div class="hero-version">v2.0 — Édition Professionnelle</div>
+                <h1>Next-Gen <span>Cyber Defense</span> Engine</h1>
+                <p>Surveillance proactive, monitoring temps réel, détection de menaces et assistant IA intégré. La solution SOC tout-en-un pour les professionnels de la cybersécurité.</p>
+
+                <div class="hero-actions">
+                    <div class="btn-wrapper">
+                        <a href="https://github.com/Riadh35/soc-commander/releases/download/v2.0/SOC_Commander_v2.0_Setup.msi"
+                           id="download-btn"
+                           class="btn btn-primary btn-download-active"
+                           download>
+                            <i class="fas fa-download"></i>
+                            <span>Télécharger SOC Commander v2.0</span>
+                        </a>
+                        <span class="download-info">Télécharger le MSI (33.3 MB)</span>
+                    </div>
+                    <div class="btn-wrapper">
+                        <a href="#contact" class="btn btn-secondary">
+                            <i class="fas fa-envelope"></i>
+                            <span>Contact Support</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Compteur de téléchargements -->
+                <div class="download-stats">
+                    <div class="download-count">
+                        <i class="fas fa-download"></i>
+                        <span class="download-count-number" data-target="1247">0</span>
+                        <span class="download-count-label">téléchargements</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+                    <div class="stat-number">11</div>
+                    <div class="stat-label">Modules Spécialisés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-terminal"></i></div>
+                    <div class="stat-number">108</div>
+                    <div class="stat-label">Outils Intégrés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-language"></i></div>
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Langues (FR / EN)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-palette"></i></div>
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Thèmes Visuels</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fonctionnalités <span>Clés</span></h2>
+                <p>Un centre de commandement complet pour la sécurité de votre infrastructure.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+                        <i class="fas fa-gauge-high"></i>
+                    </div>
+                    <h3>Monitoring Temps Réel</h3>
+                    <p>Jauges circulaires animées pour CPU, RAM et disque. Métriques système, réseau et sécurité avec rafraîchissement automatique.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #7ee787 0%, #3cba92 100%);">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h3>Détection de Menaces</h3>
+                    <p>Moteur de sécurité temps réel : détection de ports backdoor, processus suspects et connexions anormales.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Capture de Paquets</h3>
+                    <p>Sniffing réseau en direct via Scapy. Filtrage par protocole, statistiques temps réel, export CSV et sauvegarde PCAP.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #a044ff 0%, #6a3093 100%);">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Assistant IA (Ollama)</h3>
+                    <p>LLM local intégré pour l'analyse d'incidents. Injection automatique du contexte SOC, streaming temps réel, 100% hors ligne.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #f85149 0%, #ff4757 100%);">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Alertes Multi-Niveaux</h3>
+                    <p>Système d'alertes avec sévérité Critique, Warning et Info. Acquittement, historique, filtrage avancé et export CSV.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #00d4ff 0%, #0ba360 100%);">
+                        <i class="fas fa-file-lines"></i>
+                    </div>
+                    <h3>Rapports Professionnels</h3>
+                    <p>8 types de rapports (journalier, sécurité, exécutif...). Export HTML, TXT, CSV avec aperçu intégré.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODULES -->
+    <section id="modules" class="modules-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>11 Modules <span>Spécialisés</span></h2>
+                <p>Chaque aspect de votre infrastructure couvert par un module dédié.</p>
+            </div>
+            <div class="modules-grid">
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <span class="module-name">Tableau de Bord</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                        <i class="fas fa-satellite-dish"></i>
+                    </div>
+                    <span class="module-name">Capteurs</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <span class="module-name">Équipements</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <span class="module-name">Réseau</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <span class="module-name">Sécurité</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <span class="module-name">Capture Paquets</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <span class="module-name">Alertes</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">
+                        <i class="fas fa-screwdriver-wrench"></i>
+                    </div>
+                    <span class="module-name">Outils (108)</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #a044ff 0%, #6a3093 100%);">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span class="module-name">Assistant IA</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <span class="module-name">Rapports</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-gear"></i>
+                    </div>
+                    <span class="module-name">Paramètres</span>
+                </div>
+                <div class="module-item">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <span class="module-name">Licence HWID</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVANTAGES -->
+    <section id="advantages" class="advantages-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pourquoi choisir <span>SOC Commander</span> ?</h2>
+                <p>Les avantages qui font la différence face aux solutions classiques.</p>
+            </div>
+            <div class="advantages-grid">
+                <div>
+                    <ul class="advantage-list">
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-bolt"></i></div>
+                            <div class="adv-text">
+                                <h4>Solution Tout-en-Un</h4>
+                                <p>11 modules dans une seule application. Plus besoin de jongler entre plusieurs outils : monitoring, sécurité, capture, IA et rapports réunis.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-lock"></i></div>
+                            <div class="adv-text">
+                                <h4>100% Local et Sécurisé</h4>
+                                <p>Aucune donnée envoyée sur Internet. L'IA fonctionne en local via Ollama. Vos données restent sur votre infrastructure.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-language"></i></div>
+                            <div class="adv-text">
+                                <h4>Bilingue FR / EN</h4>
+                                <p>Interface entièrement traduite en français et anglais avec changement en temps réel. Plus de 180 clés de traduction.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-palette"></i></div>
+                            <div class="adv-text">
+                                <h4>3 Thèmes Professionnels</h4>
+                                <p>SOC Dark, Cyber Blue et Matrix Green. Personnalisez l'apparence selon vos préférences ou votre environnement.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-fingerprint"></i></div>
+                            <div class="adv-text">
+                                <h4>Licence liée au Matériel</h4>
+                                <p>Activation par empreinte machine unique (HWID). Protection anti-tampering, anti-debug et anti-reverse engineering intégrée.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="adv-icon"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="adv-text">
+                                <h4>Paiement Unique, Pas d'Abonnement</h4>
+                                <p>Une seule licence, pas de frais récurrents. Mises à jour v2.x incluses et support technique par email.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="advantage-visual">
+                    <div class="terminal-header">
+                        <div class="terminal-dot" style="background:#f85149;"></div>
+                        <div class="terminal-dot" style="background:#f0883e;"></div>
+                        <div class="terminal-dot" style="background:#7ee787;"></div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="line-info">[SOC Commander v2.0] Démarrage...</div>
+                        <div class="line-ok">✓ Intégrité du fichier vérifiée (SHA-256)</div>
+                        <div class="line-ok">✓ Anti-debug : aucun debugger détecté</div>
+                        <div class="line-ok">✓ DEP activé avec succès</div>
+                        <div class="line-ok">✓ Licence FULL validée</div>
+                        <div class="line-ok">✓ Moteur de sécurité démarré</div>
+                        <div class="line-info">[Dashboard] CPU: 23% | RAM: 61% | Disk: 45%</div>
+                        <div class="line-info">[Capteurs] 12 actifs | 0 critiques</div>
+                        <div class="line-warn">⚠ [Sécurité] Nouvelle connexion port 3389 (RDP)</div>
+                        <div class="line-alert">✗ [Alerte] Port 4444 détecté — backdoor potentiel</div>
+                        <div class="line-ok">✓ [IA] Ollama connecté — llama3.1 prêt</div>
+                        <div class="line-info">[Capture] 1,247 paquets analysés</div>
+                        <div class="line-ok">✓ Tous les modules opérationnels</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Licence <span>Professionnelle</span></h2>
+                <p>Un investissement unique pour une protection permanente.</p>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-info">
+                    <h3>Licence FULL</h3>
+                    <p>Protection illimitée et activation par HWID.</p>
+                    <ul>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>11 modules complets et sans restriction</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>108 outils réseau et administration</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>Assistant IA intégré (Ollama)</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>Capture de paquets et analyse réseau</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>Mises à jour v2.x incluses</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>Support technique par email</span></li>
+                        <li><i class="fas fa-check" style="color:#7ee787"></i> <span>Licence permanente, sans abonnement</span></li>
+                    </ul>
+                </div>
+                <div class="pricing-action">
+                    <div class="pricing-amount">49€</div>
+                    <p class="pricing-detail">Paiement unique</p>
+                    <p class="pricing-badge">
+                        <i class="fas fa-infinity"></i>
+                        <span>Licence permanente</span>
+                    </p>
+                    <a href="https://paypal.me/ryad36/49" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-paypal"></i>
+                        <span>ACHETER MAINTENANT</span>
+                    </a>
+                    <p class="pricing-secure">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Paiement sécurisé via PayPal</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Support & <span>Contact</span></h2>
+                <p>Besoin d'aide, d'une licence ou d'informations ? Contactez-nous.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card" onclick="openMailPopup('support')" tabindex="0">
+                    <div class="contact-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Support Technique</h3>
+                    <p>Besoin d'aide avec l'installation ou l'utilisation.</p>
+                    <span class="click-hint">Cliquez pour contacter</span>
+                </div>
+                <div class="contact-card" onclick="openMailPopup('licence')" tabindex="0">
+                    <div class="contact-icon"><i class="fas fa-key"></i></div>
+                    <h3>Activation Licence</h3>
+                    <p>Envoyez votre HWID pour recevoir votre clé d'activation.</p>
+                    <span class="click-hint">Cliquez pour contacter</span>
+                </div>
+                <div class="contact-card" onclick="openMailPopup('pro')" tabindex="0">
+                    <div class="contact-icon"><i class="fas fa-building-shield"></i></div>
+                    <h3>Partenariat & Pro</h3>
+                    <p>Solutions pour entreprises et demandes spécifiques.</p>
+                    <span class="click-hint">Cliquez pour contacter</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIL POPUP -->
+    <div class="mail-overlay" id="mailOverlay">
+        <div class="mail-popup">
+            <button class="mail-close" onclick="closeMailPopup()">&times;</button>
+            <h3>Contactez le Support</h3>
+            <p class="mail-subtitle">Choisissez votre application de messagerie</p>
+
+            <div class="mail-options">
+                <a href="javascript:void(0)" class="mail-option" id="opt-gmail" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-google"></i>
+                    <span>Gmail</span>
+                </a>
+                <a href="javascript:void(0)" class="mail-option" id="opt-outlook" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-envelope"></i>
+                    <span>Outlook</span>
+                </a>
+                <a href="javascript:void(0)" class="mail-option" id="opt-yahoo" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-yahoo"></i>
+                    <span>Yahoo</span>
+                </a>
+                <button class="mail-option" onclick="copyEmail()">
+                    <i class="fas fa-copy"></i>
+                    <span>Copier email</span>
+                </button>
+            </div>
+            <div class="mail-copied" id="mailCopied">Adresse email copiée !</div>
         </div>
     </div>
-</section>
 
-<section id="contact" class="contact-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Support & <span style="color:var(--primary)">Contact</span></h2>
-            <p>Besoin d'aide, d'une licence ou d'informations ? Contactez-nous.</p>
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#features">Fonctionnalités</a>
+                <a href="#modules">Modules</a>
+                <a href="#advantages">Avantages</a>
+                <a href="#pricing">Tarifs</a>
+                <a href="#contact">Contact</a>
+                <a href="https://github.com/Riadh35/soc-commander" target="_blank">GitHub</a>
+            </div>
+            <p>&copy; 2026 SOC Commander | Développé par Riadh Ben Khaled | Tous droits réservés.</p>
         </div>
-        <div class="contact-grid">
-            <div class="contact-card" onclick="openMailPopup('support')">
-                <div class="contact-icon"><i class="fas fa-headset"></i></div>
-                <h3>Support Technique</h3>
-                <p>Besoin d'aide avec l'installation ou l'utilisation.</p>
-                <span class="click-hint">Cliquez pour contacter</span>
-            </div>
-            <div class="contact-card" onclick="openMailPopup('licence')">
-                <div class="contact-icon"><i class="fas fa-key"></i></div>
-                <h3>Activation Licence</h3>
-                <p>Envoyez votre HWID pour recevoir votre cle d'activation.</p>
-                <span class="click-hint">Cliquez pour contacter</span>
-            </div>
-            <div class="contact-card" onclick="openMailPopup('pro')">
-                <div class="contact-icon"><i class="fas fa-building-shield"></i></div>
-                <h3>Partenariat & Pro</h3>
-                <p>Solutions pour entreprises et demandes specifiques.</p>
-                <span class="click-hint">Cliquez pour contacter</span>
-            </div>
-        </div>
-    </div>
-</section>
+    </footer>
 
-<div class="mail-overlay" id="mailOverlay">
-    <div class="mail-popup">
-        <button class="mail-close" onclick="closeMailPopup()">&times;</button>
-        <h3 id="mailTitle">Contactez le Support</h3>
-        <p class="mail-subtitle" id="mailSubtitle">Choisissez votre application de messagerie</p>
-        
-        <div class="mail-options">
-            <a href="#" class="mail-option" id="opt-gmail" target="_blank">
-                <i class="fab fa-google"></i> Gmail
-            </a>
-            <a href="#" class="mail-option" id="opt-outlook" target="_blank">
-                <i class="fas fa-envelope"></i> Outlook
-            </a>
-            <a href="#" class="mail-option" id="opt-yahoo" target="_blank">
-                <i class="fab fa-yahoo"></i> Yahoo
-            </a>
-            <div class="mail-option" onclick="copyEmail()">
-                <i class="fas fa-copy"></i> Copier email
-            </div>
-        </div>
-        <div class="mail-copied" id="mailCopied">Adresse email copiee !</div>
-    </div>
-</div>
+    <script>
+        // ===== Configuration Email =====
+        const EMAIL_ADDRESS = 'riadh.khaled@gmail.com';
 
-<footer>
-    <div class="container">
-        <div class="footer-links">
-            <a href="#features">Fonctionnalites</a>
-            <a href="#modules">Modules</a>
-            <a href="#advantages">Avantages</a>
-            <a href="#pricing">Tarifs</a>
-            <a href="#contact">Support</a>
-            <a href="mailto:riadh.khaled@gmail.com">Contact</a>
-            <a href="https://github.com/Riadh35/soc-commander" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <p>&copy; 2026 SOC Commander © Developpe par Riadh Ben Khaled © Tous droits reserves.</p>
-    </div>
-</footer>
+        // ===== Compteur de téléchargements =====
+        (function() {
+            const DOWNLOAD_COUNT_KEY = 'soc_download_count';
+            const DEFAULT_COUNT = 1247;
+            let downloadReady = false;
 
-<script>
-function openMailPopup(type) {
-    let s = "Support SOC Commander";
-    let b = "Bonjour,\n\nJe vous contacte concernant...";
-    if(type === 'licence') {
-        s = "Activation Licence SOC Commander (HWID)";
-        b = "Bonjour,\n\nVoici mon HWID pour l'activation : [VOTRE_HWID_ICI]";
-    } else if(type === 'pro') {
-        s = "Demande Partenariat / Professionnelle";
+            function getCount() {
+                const stored = localStorage.getItem(DOWNLOAD_COUNT_KEY);
+                return stored ? parseInt(stored, 10) : DEFAULT_COUNT;
+            }
+
+            function saveCount(n) {
+                localStorage.setItem(DOWNLOAD_COUNT_KEY, n.toString());
+            }
+
+            // Initialiser : afficher la bonne valeur dès le chargement
+            const counterEl = document.querySelector('.download-count-number');
+            if (counterEl) {
+                const current = getCount();
+                counterEl.setAttribute('data-target', current);
+                counterEl.textContent = current.toLocaleString('fr-FR');
+                downloadReady = true;
+            }
+
+            // Écouter le clic sur le bouton de téléchargement
+            const dlBtn = document.getElementById('download-btn');
+            if (dlBtn) {
+                dlBtn.addEventListener('click', function() {
+                    // Incrémenter et sauvegarder
+                    const newCount = getCount() + 1;
+                    saveCount(newCount);
+
+                    // Effet visuel sur le bouton
+                    dlBtn.classList.remove('btn-download-active');
+                    dlBtn.classList.add('clicked');
+
+                    // Texte temporaire "Téléchargement lancé !"
+                    const btnText = dlBtn.querySelector('span');
+                    const btnIcon = dlBtn.querySelector('i');
+                    const originalText = btnText.textContent;
+                    const originalIcon = btnIcon.className;
+
+                    btnText.textContent = 'Téléchargement lancé !';
+                    btnIcon.className = 'fas fa-check';
+
+                    setTimeout(() => {
+                        dlBtn.classList.remove('clicked');
+                        dlBtn.style.animation = 'download-success 0.5s ease forwards';
+                        setTimeout(() => {
+                            dlBtn.style.animation = '';
+                            dlBtn.classList.add('btn-download-active');
+                            btnText.textContent = originalText;
+                            btnIcon.className = originalIcon;
+                        }, 500);
+                    }, 800);
+
+                    // Mise à jour du compteur avec animation
+                    if (counterEl && downloadReady) {
+                        // Animation du nombre qui monte
+                        counterEl.style.transform = 'scale(1.3)';
+                        counterEl.style.color = '#7ee787';
+                        counterEl.style.textShadow = '0 0 20px rgba(126, 231, 135, 0.8)';
+                        counterEl.textContent = newCount.toLocaleString('fr-FR');
+                        counterEl.setAttribute('data-target', newCount);
+
+                        setTimeout(() => {
+                            counterEl.style.transform = 'scale(1)';
+                            counterEl.style.color = '#00d4ff';
+                            counterEl.style.textShadow = '';
+                        }, 400);
+                    }
+                });
+            }
+        })();
+
+        // ===== Mail Popup Functions =====
+        function openMailPopup(type) {
+            let subject = "Support SOC Commander";
+            let body = "Bonjour,\n\nJe vous contacte concernant...";
+
+            // Personnalisation selon le type
+            if(type === 'licence') {
+                subject = "Activation Licence SOC Commander (HWID)";
+                body = "Bonjour,\n\nVoici mon HWID pour l'activation : [VOTRE_HWID_ICI]";
+            } else if(type === 'pro') {
+                subject = "Demande Partenariat / Professionnelle";
+                body = "Bonjour,\n\nJe souhaiterais discuter d'un partenariat ou d'une solution professionnelle...";
+            }
+
+            // Encodage URL
+            const subjectEncoded = encodeURIComponent(subject);
+            const bodyEncoded = encodeURIComponent(body);
+
+            // Configuration des liens Gmail
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL_ADDRESS}&su=${subjectEncoded}&body=${bodyEncoded}`;
+            const gmailBtn = document.getElementById('opt-gmail');
+            gmailBtn.href = gmailLink;
+            gmailBtn.onclick = function(e) {
+                e.preventDefault();
+                window.open(gmailLink, '_blank', 'noopener,noreferrer');
+            };
+
+            // Configuration des liens Outlook
+            const outlookLink = `https://outlook.live.com/mail/0/deeplink/compose?to=${EMAIL_ADDRESS}&subject=${subjectEncoded}&body=${bodyEncoded}`;
+            const outlookBtn = document.getElementById('opt-outlook');
+            outlookBtn.href = outlookLink;
+            outlookBtn.onclick = function(e) {
+                e.preventDefault();
+                window.open(outlookLink, '_blank', 'noopener,noreferrer');
+            };
+
+            // Configuration des liens Yahoo
+            const yahooLink = `https://compose.mail.yahoo.com/?to=${EMAIL_ADDRESS}&subject=${subjectEncoded}&body=${bodyEncoded}`;
+            const yahooBtn = document.getElementById('opt-yahoo');
+            yahooBtn.href = yahooLink;
+            yahooBtn.onclick = function(e) {
+                e.preventDefault();
+                window.open(yahooLink, '_blank', 'noopener,noreferrer');
+            };
+
+            // Reset et affichage
+            document.getElementById('mailCopied').style.display = 'none';
+            document.getElementById('mailOverlay').classList.add('active');
+
+            // Focus sur le bouton de fermeture pour accessibilité
+            setTimeout(() => {
+                document.querySelector('.mail-close').focus();
+            }, 100);
+        }
+
+        function closeMailPopup() {
+            document.getElementById('mailOverlay').classList.remove('active');
+        }
+
+        async function copyEmail() {
+            try {
+                await navigator.clipboard.writeText(EMAIL_ADDRESS);
+                const copiedEl = document.getElementById('mailCopied');
+                copiedEl.style.display = 'block';
+
+                // Cache après 3 secondes
+                setTimeout(() => {
+                    copiedEl.style.display = 'none';
+                }, 3000);
+            } catch (err) {
+                console.error('Erreur lors de la copie:', err);
+                alert('Erreur lors de la copie de l\'email');
+            }
+        }
+
+        // ===== Fermeture popup avec ESC =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('mailOverlay');
+                if (overlay.classList.contains('active')) {
+                    closeMailPopup();
+                }
+            }
+        });
+
+        // ===== Fermeture popup en cliquant en dehors =====
+        document.getElementById('mailOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMailPopup();
+            }
+        });
+
+        // ===== Support clavier pour les contact cards =====
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // ===== Scroll navbar animation =====
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                nav.style.padding = '10px 0';
+                nav.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(0, 212, 255, 0.2)';
+                nav.style.borderBottom = '1px solid rgba(0, 212, 255, 0.25)';
+            } else {
+                nav.style.padding = '15px 0';
+                nav.style.boxShadow = '';
+                nav.style.borderBottom = '1px solid rgba(0, 212, 255, 0.15)';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ===== Smooth scroll pour les ancres =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // ===== Animation au scroll (fade in) =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les cards et sections
+        document.querySelectorAll('.feature-card, .module-item, .stat-card, .advantage-list li, .contact-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // ===== Animation compteurs (Count-up) =====
+        function animateCounter(element, target, duration = 2000) {
+            const start = 0;
+            const increment = target / (duration / 16); // 60 FPS
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString('fr-FR');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString('fr-FR');
+                }
+            }, 16);
+        }
+
+        // Observer pour les stats
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted', 'counting');
+                    const target = parseInt(entry.target.textContent);
+                    entry.target.textContent = '0';
+                    animateCounter(entry.target, target, 2000);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observer les nombres de stats
+        document.querySelectorAll('.stat-number').forEach(el => {
+            statsObserver.observe(el);
+        });
+
+        // Le compteur de téléchargements est géré par le module IIFE en haut du script
+
+        // ===== Console easter egg =====
+        console.log('%c🛡️ SOC Commander v2.0', 'color: #00d4ff; font-size: 24px; font-weight: bold;');
+        console.log('%cDéveloppé avec ❤️ par Riadh Ben Khaled', 'color: #8b949e; font-size: 14px;');
+        console.log('%cGitHub: https://github.com/Riadh35/soc-commander', 'color: #7ee787; font-size: 12px;');
+    </script>
+
+    <!-- Schema.org Structured Data pour SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SOC Commander",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Windows",
+      "offers": {
+        "@type": "Offer",
+        "price": "49",
+        "priceCurrency": "EUR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "127"
+      },
+      "description": "Solution complète de cybersécurité avec monitoring temps réel, détection de menaces, capture de paquets et assistant IA intégré."
     }
-    const to = 'riadh.khaled@gmail.com';
-    document.getElementById('opt-gmail').href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + to + '&su=' + s + '&body=' + b;
-    document.getElementById('opt-outlook').href = 'https://outlook.live.com/mail/0/deeplink/compose?to=' + to + '&subject=' + s + '&body=' + b;
-    document.getElementById('opt-yahoo').href = 'https://compose.mail.yahoo.com/?to=' + to + '&subject=' + s + '&body=' + b;
-    document.getElementById('mailCopied').style.display = 'none';
-    document.getElementById('mailOverlay').classList.add('active');
-}
-function closeMailPopup() {
-    document.getElementById('mailOverlay').classList.remove('active');
-}
-function copyEmail() {
-    navigator.clipboard.writeText('riadh.khaled@gmail.com').then(function() {
-        document.getElementById('mailCopied').style.display = 'block';
-    });
-}
-</script>
+    </script>
 
 </body>
 </html>
